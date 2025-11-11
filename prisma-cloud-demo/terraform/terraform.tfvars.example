@@ -1,0 +1,23 @@
+# Example Terraform Variables Configuration
+# Copy this file to terraform.tfvars and customize as needed
+
+# LocalStack Configuration (for local testing - DEFAULT)
+# Use this for testing without AWS credentials or costs
+use_localstack     = true
+localstack_endpoint = "http://localhost:4566"
+
+# AWS Configuration (for real AWS deployment)
+# Uncomment and set use_localstack = false to deploy to AWS
+# use_localstack     = false
+
+# Common Configuration
+aws_region         = "us-east-1"
+bucket_name        = "example-prisma-demo-bucket"
+vpc_id             = "vpc-12345678"  # Update with your VPC ID for AWS deployment
+admin_ip_cidr      = "10.0.0.0/8"   # Update with your admin IP range
+
+# Notes:
+# - LocalStack mode: No AWS credentials needed
+# - AWS mode: Ensure AWS credentials are configured (AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
+# - LocalStack uses dummy credentials automatically
+# - For AWS deployment, update vpc_id to match your actual VPC

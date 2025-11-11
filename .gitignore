@@ -12,6 +12,11 @@
 **/terraform.tfstate.backup
 **/*.tfvars
 **/.terraform.tfstate.lock.info
+**/tfplan
+
+# LocalStack
+.localstack-data/
+**/.localstack-data/
 
 # Python
 **/__pycache__/

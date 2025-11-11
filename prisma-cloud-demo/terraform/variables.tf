@@ -23,3 +23,16 @@ variable "admin_ip_cidr" {
   type        = string
   default     = "10.0.0.0/8"
 }
+
+# LocalStack configuration variables
+variable "use_localstack" {
+  description = "Whether to use LocalStack for local testing instead of AWS"
+  type        = bool
+  default     = true
+}
+
+variable "localstack_endpoint" {
+  description = "LocalStack endpoint URL"
+  type        = string
+  default     = "http://localhost:4566"
+}
