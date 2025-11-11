@@ -1,5 +1,7 @@
 # Platform-Testing-Demo
 
+> 🆕 **NEW!** Now with LocalStack support - Test cloud infrastructure locally without AWS credentials! [Quick Start →](QUICKSTART-LOCAL.md)
+
 This repository contains demo setups for cloud security and compliance testing tools. Each demo is self-contained with its own README and executable samples.
 
 ## Demos Included
