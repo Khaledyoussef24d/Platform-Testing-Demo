@@ -1,0 +1,26 @@
+name: aws-security-baseline
+title: AWS Security Baseline Profile
+maintainer: Platform Testing Demo
+copyright: Platform Testing Demo
+copyright_email: demo@example.com
+license: Apache-2.0
+summary: An InSpec Compliance Profile for AWS Cloud Security
+version: 1.0.0
+supports:
+  - platform-name: aws
+
+inputs:
+  - name: aws_region
+    type: String
+    value: us-east-1
+    description: AWS region to test
+
+  - name: bucket_name_pattern
+    type: String
+    value: '*'
+    description: Pattern to match S3 bucket names for testing
+
+  - name: allowed_ssh_cidr
+    type: String
+    value: '10.0.0.0/8'
+    description: Allowed CIDR block for SSH access
