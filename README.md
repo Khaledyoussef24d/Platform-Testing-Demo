@@ -88,6 +88,18 @@ cd inspec-demo
 
 ## Getting Started
 
+### Quick Start
+
+Run the interactive quick-start script:
+
+```bash
+./quick-start.sh
+```
+
+This will guide you through choosing and running either demo.
+
+### Manual Setup
+
 1. Clone this repository
 2. Choose a demo (Prisma Cloud or InSpec)
 3. Navigate to the demo directory
