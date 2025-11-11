@@ -1,0 +1,41 @@
+# Testing results and reports
+**/scan-results/
+**/test-results/
+**/.inspec/
+**/results*.json
+**/report.html
+
+# Terraform
+**/.terraform/
+**/.terraform.lock.hcl
+**/terraform.tfstate
+**/terraform.tfstate.backup
+**/*.tfvars
+**/.terraform.tfstate.lock.info
+
+# Python
+**/__pycache__/
+**/*.py[cod]
+**/*$py.class
+**/.pytest_cache/
+**/.venv/
+**/venv/
+**/*.egg-info/
+
+# IDE
+**/.vscode/
+**/.idea/
+**/*.swp
+**/*.swo
+**/*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+**/*.log
+
+# Temporary files
+**/tmp/
+**/.tmp/

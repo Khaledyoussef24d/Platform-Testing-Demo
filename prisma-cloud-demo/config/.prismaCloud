@@ -1,0 +1,22 @@
+# Prisma Cloud Configuration File
+# This file contains sample configuration for Prisma Cloud CLI (checkov/bridgecrew)
+
+# Policy Settings
+policy-metadata-filter: "policy.severity=HIGH,CRITICAL"
+
+# Output Settings
+output: json
+compact: false
+quiet: false
+
+# Framework Settings
+framework: terraform
+
+# Skip Checks (if needed)
+# skip-check: CKV_AWS_1,CKV_AWS_2
+
+# Soft Fail (continue even with failures)
+soft-fail: false
+
+# Download External Modules
+download-external-modules: true
