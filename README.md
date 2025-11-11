@@ -13,14 +13,21 @@ Demonstrates Infrastructure as Code (IaC) security scanning using Prisma Cloud (
 - Sample Terraform configurations with security best practices
 - Automated scanning script
 - Multiple output formats (CLI, JSON)
-- Configuration examples
+- **LocalStack support for local deployment without AWS credentials**
+- Test Terraform deployments locally using Docker
 
 [📖 Read the Prisma Cloud Demo README](prisma-cloud-demo/README.md)
 
-**Quick Start:**
+**Quick Start (Scanning Only):**
 ```bash
 cd prisma-cloud-demo
 ./scan.sh
+```
+
+**Quick Start (Local Deployment):**
+```bash
+cd prisma-cloud-demo
+./local-deploy.sh  # No AWS account needed!
 ```
 
 ### 2. InSpec Demo
@@ -63,28 +70,58 @@ cd inspec-demo
 | **Testing Phase** | Pre-deployment (Static) | Post-deployment (Dynamic) |
 | **Target** | IaC files | Live infrastructure |
 | **Installation** | `pip install checkov` | Platform-specific installer |
-| **AWS Credentials** | Not required | Required |
+| **AWS Credentials** | Not required for scanning | Required (or use LocalStack) |
+| **Local Testing** | ✅ Yes (with LocalStack) | ✅ Yes (with LocalStack) |
 | **Execution Time** | Fast (seconds) | Moderate (API calls) |
 | **Best For** | Catching issues early | Compliance auditing |
 
 ## Recommended Workflow
 
 1. **Development Phase**: Use Prisma Cloud to scan IaC templates
-2. **Pre-commit**: Integrate Checkov in git hooks or IDE
-3. **CI/CD Pipeline**: Run Checkov on pull requests
-4. **Post-deployment**: Use InSpec for compliance testing
-5. **Continuous Monitoring**: Schedule InSpec tests regularly
+2. **Local Testing**: Deploy to LocalStack to test infrastructure locally (no cloud costs!)
+3. **Pre-commit**: Integrate Checkov in git hooks or IDE
+4. **CI/CD Pipeline**: Run Checkov on pull requests
+5. **Post-deployment**: Use InSpec for compliance testing
+6. **Continuous Monitoring**: Schedule InSpec tests regularly
+
+## LocalStack - Local Cloud Testing
+
+**NEW:** This repository now supports LocalStack for local cloud testing without requiring AWS credentials!
+
+### What is LocalStack?
+
+LocalStack provides a fully functional local AWS cloud stack, allowing you to:
+- Test Terraform configurations locally
+- Develop without cloud costs
+- Avoid AWS credential requirements
+- Speed up development cycles
+
+### Quick Start with LocalStack
+
+```bash
+# Start the Prisma Cloud demo with LocalStack
+cd prisma-cloud-demo
+./local-deploy.sh
+
+# Clean up when done
+./local-cleanup.sh
+```
+
+### Requirements
+- Docker and Docker Compose installed
+- Terraform CLI installed
+- No AWS account or credentials needed!
 
 ## Prerequisites
 
 ### For Prisma Cloud Demo
-- Python 3.7+
-- pip3
+- **For Scanning**: Python 3.7+ and pip3
+- **For Local Deployment**: Docker, Docker Compose, and Terraform (no AWS account needed!)
 
 ### For InSpec Demo
 - InSpec CLI
-- AWS credentials configured
-- AWS account access
+- AWS credentials configured (or LocalStack for local testing)
+- AWS account access (or LocalStack for local testing)
 
 ## Getting Started
 

@@ -1,5 +1,6 @@
 # Sample Terraform configuration for Prisma Cloud scanning
 # This demonstrates common cloud resources that should be scanned for security issues
+# Supports both AWS and LocalStack for local testing without AWS credentials
 
 terraform {
   required_version = ">= 1.0"
@@ -12,7 +13,23 @@ terraform {
 }
 
 provider "aws" {
-  region = var.aws_region
+  region                      = var.aws_region
+  access_key                  = var.use_localstack ? "test" : null
+  secret_key                  = var.use_localstack ? "test" : null
+  skip_credentials_validation = var.use_localstack
+  skip_metadata_api_check     = var.use_localstack
+  skip_requesting_account_id  = var.use_localstack
+
+  # LocalStack endpoint configuration
+  dynamic "endpoints" {
+    for_each = var.use_localstack ? [1] : []
+    content {
+      s3             = var.localstack_endpoint
+      ec2            = var.localstack_endpoint
+      iam            = var.localstack_endpoint
+      sts            = var.localstack_endpoint
+    }
+  }
 }
 
 # S3 Bucket with security best practices
