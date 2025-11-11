@@ -24,10 +24,10 @@ provider "aws" {
   dynamic "endpoints" {
     for_each = var.use_localstack ? [1] : []
     content {
-      s3             = var.localstack_endpoint
-      ec2            = var.localstack_endpoint
-      iam            = var.localstack_endpoint
-      sts            = var.localstack_endpoint
+      s3  = var.localstack_endpoint
+      ec2 = var.localstack_endpoint
+      iam = var.localstack_endpoint
+      sts = var.localstack_endpoint
     }
   }
 }

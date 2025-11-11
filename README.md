@@ -125,7 +125,20 @@ cd prisma-cloud-demo
 
 ## Getting Started
 
-### Quick Start
+### 🎯 Quick Start with Local Testing (Recommended - No AWS Needed!)
+
+Want to test immediately without AWS credentials? Start here:
+
+```bash
+cd prisma-cloud-demo
+./local-deploy.sh
+```
+
+**📖 See [QUICKSTART-LOCAL.md](QUICKSTART-LOCAL.md) for the fastest way to get started!**
+
+**📚 See [LOCAL-TESTING-GUIDE.md](LOCAL-TESTING-GUIDE.md) for comprehensive local testing documentation.**
+
+### Quick Start with Interactive Script
 
 Run the interactive quick-start script:
 
