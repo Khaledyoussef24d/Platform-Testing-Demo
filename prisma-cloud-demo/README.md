@@ -15,7 +15,7 @@ Prisma Cloud is a comprehensive cloud security platform that helps organizations
 ### For Local Deployment (Optional)
 - Docker and Docker Compose
 - Terraform CLI (>= 1.0)
-- (Optional) AWS CLI for testing LocalStack resources
+- No cloud credentials required!
 
 ## Installation
 
@@ -30,13 +30,13 @@ pip3 install checkov
 This demo includes:
 
 - **terraform/**: Sample Terraform configurations demonstrating security best practices
-  - `main.tf`: AWS resources (S3, Security Groups, IAM) with LocalStack support
-  - `variables.tf`: Configuration variables including LocalStack options
+  - `main.tf`: Local infrastructure resources (MinIO S3-compatible storage, simulated IAM and security rules)
+  - `variables.tf`: Configuration variables for local services
   - `outputs.tf`: Output values
 - **config/**: Prisma Cloud configuration files
 - **scan.sh**: Automated scanning script
-- **local-deploy.sh**: Deploy Terraform to LocalStack (no AWS account needed)
-- **local-cleanup.sh**: Clean up LocalStack deployment
+- **local-deploy.sh**: Deploy Terraform to MinIO (no cloud account needed)
+- **local-cleanup.sh**: Clean up local deployment
 
 ## Running the Demo
 
@@ -55,9 +55,9 @@ This will:
 3. Generate reports in multiple formats
 4. Save results to scan-results/ directory
 
-### Option 2: Deploy to LocalStack (Local Testing - **NEW!**)
+### Option 2: Deploy to Local Services (100% Local Testing)
 
-Test your Terraform deployments locally without AWS credentials:
+Test your Terraform deployments locally without any cloud credentials:
 
 ```bash
 cd prisma-cloud-demo
@@ -65,16 +65,17 @@ cd prisma-cloud-demo
 ```
 
 This will:
-1. Start LocalStack using Docker Compose
-2. Initialize Terraform with LocalStack configuration
-3. Deploy all resources to LocalStack (S3, IAM, Security Groups)
+1. Start MinIO (S3-compatible storage) using Docker Compose
+2. Initialize Terraform with MinIO configuration
+3. Deploy all resources to local services (S3 buckets, simulated IAM and security rules)
 4. Show you how to interact with the deployed resources
 
 **Benefits:**
-- No AWS account or credentials required
-- Free local testing
+- No cloud account or credentials required
+- 100% free local testing
 - Fast deployment and testing cycles
-- Safe experimentation without cloud costs
+- Safe experimentation without any cloud costs
+- Access MinIO web console to manage buckets
 
 **Cleanup after testing:**
 ```bash
@@ -131,65 +132,62 @@ This demo covers common cloud security checks:
 - IAM least privilege
 - Resource tagging
 
-## LocalStack Deployment Guide
+## Local Deployment Guide
 
-### What is LocalStack?
+### What is MinIO?
 
-LocalStack is a fully functional local cloud stack that emulates AWS services on your local machine. It allows you to:
-- Test Terraform configurations without AWS credentials
-- Develop and test cloud applications locally
-- Avoid cloud costs during development
-- Speed up your development workflow
+MinIO is a high-performance, S3-compatible object storage server that runs locally on your machine. It allows you to:
+- Test Terraform configurations without any cloud credentials
+- Develop and test storage applications locally
+- No cloud costs - 100% free local testing
+- Fast local development workflow
+- Web console for easy bucket management
 
-### LocalStack Setup
+### Local Setup
 
 The `local-deploy.sh` script handles everything automatically, but here's what happens:
 
-1. **Start LocalStack**: Docker container starts with S3, EC2, IAM, and STS services
-2. **Configure Terraform**: Terraform is configured to use LocalStack endpoints
-3. **Deploy Resources**: All resources are created in LocalStack
-4. **Verify Deployment**: You can interact with resources using AWS CLI or Terraform
+1. **Start MinIO**: Docker container starts with S3-compatible storage
+2. **Configure Terraform**: Terraform is configured to use MinIO endpoints
+3. **Deploy Resources**: All resources are created in local services
+4. **Verify Deployment**: You can interact with resources using MinIO console or Terraform
 
-### Manual LocalStack Commands
+### Manual Deployment Commands
 
 If you want more control, you can manually deploy:
 
 ```bash
-# Start LocalStack
+# Start MinIO
 docker-compose up -d
 
 # Wait for it to be ready
-curl http://localhost:4566/_localstack/health
+curl http://localhost:9000/minio/health/live
 
 # Initialize Terraform
 cd prisma-cloud-demo/terraform
 terraform init
 
-# Deploy with LocalStack
-terraform apply -var="use_localstack=true"
+# Deploy to local services
+terraform apply
 
-# List S3 buckets in LocalStack
-aws --endpoint-url=http://localhost:4566 s3 ls
+# Access MinIO Console
+# Open browser to http://localhost:9001
+# Login with: minioadmin / minioadmin
 
 # Destroy resources
-terraform destroy -var="use_localstack=true"
+terraform destroy
 
-# Stop LocalStack
+# Stop MinIO
 cd ../..
 docker-compose down
 ```
 
-### Using with Real AWS
+### MinIO Console Access
 
-If you want to deploy to real AWS instead of LocalStack:
-
-```bash
-cd prisma-cloud-demo/terraform
-terraform init
-terraform apply -var="use_localstack=false"
-```
-
-Make sure you have AWS credentials configured before deploying to real AWS.
+Access the MinIO web console to manage your buckets:
+- URL: http://localhost:9001
+- Username: minioadmin
+- Password: minioadmin
 
 ## Remediation
 
@@ -211,6 +209,7 @@ Checkov can be integrated into:
 
 - [Checkov Documentation](https://www.checkov.io/1.Welcome/What%20is%20Checkov.html)
 - [Prisma Cloud Documentation](https://docs.paloaltonetworks.com/prisma/prisma-cloud)
+- [MinIO Documentation](https://min.io/docs/minio/linux/index.html)
 - [Policy Reference](https://docs.bridgecrew.io/docs/aws-policy-index)
 
 ## Notes

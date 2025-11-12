@@ -1,18 +1,24 @@
 #!/bin/bash
 
-# InSpec Demo - Cloud Security Testing Script
-# This script demonstrates how to run InSpec compliance tests against AWS
-# For local testing without AWS credentials, use ./local-test.sh instead
+# InSpec Demo - DEPRECATED
+# This script is deprecated and kept for reference only
+# Use ./local-test.sh for local testing with MinIO (no cloud credentials needed)
 
 set -e
 
 echo "========================================="
-echo "InSpec Demo - Cloud Security Testing"
+echo "InSpec Demo - DEPRECATED"
 echo "========================================="
 echo ""
-echo "ℹ️  This script tests against real AWS infrastructure."
-echo "💡 For local testing without AWS credentials, use: ./local-test.sh"
+echo "⚠️  This script is deprecated and kept for reference only."
+echo "💡 Use ./local-test.sh for local testing with MinIO (no cloud credentials needed)"
 echo ""
+echo "This demo no longer requires cloud credentials or cloud services."
+echo ""
+exit 1
+
+# Old AWS testing logic below (kept for reference)
+# ================================================
 
 # Check if InSpec is installed
 if ! command -v inspec &> /dev/null; then

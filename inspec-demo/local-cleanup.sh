@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # InSpec Local Testing Cleanup Script
-# This script cleans up LocalStack resources and stops the container
+# This script cleans up MinIO resources and stops the container
 
 set -e
 
@@ -13,28 +13,26 @@ echo "InSpec Local Testing Cleanup"
 echo "========================================="
 echo ""
 
-# Set up environment for LocalStack
-export AWS_ACCESS_KEY_ID=test
-export AWS_SECRET_ACCESS_KEY=test
-export AWS_DEFAULT_REGION=us-east-1
-export AWS_ENDPOINT_URL=http://localhost:4566
-
 # Destroy Terraform infrastructure
 echo "🗑️  Destroying test infrastructure..."
 cd "$PROJECT_ROOT/prisma-cloud-demo/terraform"
 
 if [ -f ".terraform.lock.hcl" ]; then
-    terraform destroy -var="use_localstack=true" -auto-approve
+    terraform destroy -auto-approve
     echo "✅ Infrastructure destroyed!"
 else
     echo "⚠️  No Terraform state found, skipping destroy."
 fi
 echo ""
 
-# Stop LocalStack container
-echo "🛑 Stopping LocalStack container..."
+# Stop MinIO container
+echo "🛑 Stopping MinIO container..."
 cd "$PROJECT_ROOT"
-docker-compose down
+if command -v docker-compose &> /dev/null; then
+    docker-compose down -v
+else
+    docker compose down -v
+fi
 
 echo ""
 echo "✅ Cleanup completed!"

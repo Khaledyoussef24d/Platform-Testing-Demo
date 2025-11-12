@@ -1,8 +1,8 @@
 # Platform-Testing-Demo
 
-> 🆕 **NEW!** Now with LocalStack support - Test cloud infrastructure locally without AWS credentials! [Quick Start →](QUICKSTART-LOCAL.md)
+> 🆕 **100% LOCAL!** Test infrastructure locally with MinIO and local services - No cloud credentials required! [Quick Start →](QUICKSTART-LOCAL.md)
 
-This repository contains demo setups for cloud security and compliance testing tools. Each demo is self-contained with its own README and executable samples.
+This repository contains demo setups for infrastructure security and compliance testing tools. Each demo runs entirely on your local machine using Docker - no cloud accounts or credentials needed!
 
 ## Demos Included
 
@@ -15,8 +15,8 @@ Demonstrates Infrastructure as Code (IaC) security scanning using Prisma Cloud (
 - Sample Terraform configurations with security best practices
 - Automated scanning script
 - Multiple output formats (CLI, JSON)
-- **LocalStack support for local deployment without AWS credentials**
-- Test Terraform deployments locally using Docker
+- **100% local deployment with MinIO (S3-compatible storage)**
+- Test Terraform deployments locally using Docker - no cloud credentials!
 
 [📖 Read the Prisma Cloud Demo README](prisma-cloud-demo/README.md)
 
@@ -29,34 +29,28 @@ cd prisma-cloud-demo
 **Quick Start (Local Deployment):**
 ```bash
 cd prisma-cloud-demo
-./local-deploy.sh  # No AWS account needed!
+./local-deploy.sh  # 100% local, no credentials needed!
 ```
 
 ### 2. InSpec Demo
 Location: `inspec-demo/`
 
-Demonstrates cloud infrastructure testing and compliance auditing using Chef InSpec. Test cloud resources for security and compliance with industry standards.
+Demonstrates infrastructure testing and compliance auditing using Chef InSpec. Test infrastructure resources for security and compliance with industry standards.
 
 **Features:**
 - Comprehensive security baseline profiles
-- S3, IAM, and Security Groups tests
-- **LocalStack support for local testing without AWS credentials**
+- Storage, policy, and security rule tests
+- **100% local testing with MinIO - no cloud credentials**
 - Automated test execution scripts
 - Multiple report formats (CLI, JSON, HTML)
 
 [📖 Read the InSpec Demo README](inspec-demo/README.md)
 
-**Quick Start (Local Testing - No AWS Needed!):**
+**Quick Start (Local Testing - No Credentials Needed!):**
 ```bash
 cd inspec-demo
 ./local-test.sh
 # See inspec-demo/LOCAL-TESTING.md for detailed guide
-```
-
-**Quick Start (AWS Testing):**
-```bash
-cd inspec-demo
-./run-tests.sh
 ```
 
 ## What These Tools Do
@@ -68,10 +62,10 @@ cd inspec-demo
 - **Output**: Security issues and misconfigurations in your IaC templates
 
 ### InSpec
-- **Purpose**: Dynamic testing of deployed cloud infrastructure
+- **Purpose**: Dynamic testing of deployed infrastructure
 - **When to use**: After infrastructure is deployed (continuous compliance)
-- **What it tests**: Live cloud resources via APIs
-- **Output**: Compliance status of your actual cloud environment
+- **What it tests**: Live infrastructure resources via APIs
+- **Output**: Compliance status of your infrastructure environment
 
 ## Usage Comparison
 
@@ -80,36 +74,37 @@ cd inspec-demo
 | **Testing Phase** | Pre-deployment (Static) | Post-deployment (Dynamic) |
 | **Target** | IaC files | Live infrastructure |
 | **Installation** | `pip install checkov` | Platform-specific installer |
-| **AWS Credentials** | Not required for scanning | Not required (use LocalStack) |
-| **Local Testing** | ✅ Yes (with LocalStack) | ✅ Yes (with LocalStack) |
+| **Credentials** | Not required | Not required |
+| **Local Testing** | ✅ Yes (100% local) | ✅ Yes (100% local) |
 | **Execution Time** | Fast (seconds) | Moderate (API calls) |
 | **Best For** | Catching issues early | Compliance auditing |
 
 ## Recommended Workflow
 
 1. **Development Phase**: Use Prisma Cloud to scan IaC templates
-2. **Local Testing**: Deploy to LocalStack to test infrastructure locally (no cloud costs!)
+2. **Local Testing**: Deploy to local MinIO to test infrastructure locally (no cloud costs!)
 3. **Pre-commit**: Integrate Checkov in git hooks or IDE
 4. **CI/CD Pipeline**: Run Checkov on pull requests
 5. **Post-deployment**: Use InSpec for compliance testing
 6. **Continuous Monitoring**: Schedule InSpec tests regularly
 
-## LocalStack - Local Cloud Testing
+## Local Infrastructure Testing
 
-**NEW:** This repository now supports LocalStack for local cloud testing without requiring AWS credentials!
+**100% LOCAL:** This repository uses MinIO and local services for infrastructure testing without requiring any cloud credentials!
 
-### What is LocalStack?
+### What is MinIO?
 
-LocalStack provides a fully functional local AWS cloud stack, allowing you to:
+MinIO provides S3-compatible object storage that runs locally, allowing you to:
 - Test Terraform configurations locally
 - Develop without cloud costs
-- Avoid AWS credential requirements
-- Speed up development cycles
+- No cloud credentials required
+- Fast local development cycles
+- Access web console for bucket management
 
-### Quick Start with LocalStack
+### Quick Start with Local Testing
 
 ```bash
-# Start the Prisma Cloud demo with LocalStack
+# Start the Prisma Cloud demo with MinIO
 cd prisma-cloud-demo
 ./local-deploy.sh
 
@@ -120,23 +115,22 @@ cd prisma-cloud-demo
 ### Requirements
 - Docker and Docker Compose installed
 - Terraform CLI installed
-- No AWS account or credentials needed!
+- No cloud account or credentials needed!
 
 ## Prerequisites
 
 ### For Prisma Cloud Demo
 - **For Scanning**: Python 3.7+ and pip3
-- **For Local Deployment**: Docker, Docker Compose, and Terraform (no AWS account needed!)
+- **For Local Deployment**: Docker, Docker Compose, and Terraform (no cloud account needed!)
 
 ### For InSpec Demo
-- **For Local Testing**: InSpec CLI, Docker, Docker Compose, and Terraform (no AWS account needed!)
-- **For AWS Testing**: InSpec CLI, AWS credentials configured, and AWS account access
+- **For Local Testing**: InSpec CLI, Docker, Docker Compose, and Terraform (no cloud account needed!)
 
 ## Getting Started
 
-### 🎯 Quick Start with Local Testing (Recommended - No AWS Needed!)
+### 🎯 Quick Start with Local Testing (100% Local - No Cloud Credentials!)
 
-Want to test immediately without AWS credentials? Start here:
+Test immediately on your local machine - no cloud accounts required:
 
 **Prisma Cloud Demo (IaC Security Scanning + Local Deployment):**
 ```bash
@@ -185,7 +179,8 @@ Both tools can be integrated into:
 - [Prisma Cloud Documentation](https://docs.paloaltonetworks.com/prisma/prisma-cloud)
 - [Checkov Documentation](https://www.checkov.io/)
 - [InSpec Documentation](https://docs.chef.io/inspec/)
-- [AWS Security Best Practices](https://aws.amazon.com/security/best-practices/)
+- [MinIO Documentation](https://min.io/docs/minio/linux/index.html)
+- [Infrastructure Security Best Practices](https://www.checkov.io/)
 
 ## Contributing
 
