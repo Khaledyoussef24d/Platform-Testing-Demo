@@ -1,6 +1,6 @@
-# Quick Start: Local Cloud Testing (No AWS Account Needed!)
+# Quick Start: 100% Local Testing (No Cloud Credentials Needed!)
 
-Test cloud infrastructure locally without AWS credentials or costs using LocalStack.
+Test infrastructure locally without any cloud credentials or costs using MinIO and local services.
 
 ## 🚀 One-Command Setup
 
@@ -12,9 +12,10 @@ cd prisma-cloud-demo
 ```
 
 That's it! This will:
-- Start LocalStack (local AWS emulator)
+- Start MinIO (S3-compatible local storage)
 - Deploy all Terraform resources locally
 - Show you how to interact with them
+- No cloud credentials required!
 
 ### Option 2: InSpec Demo (Infrastructure Testing)
 
@@ -24,10 +25,11 @@ cd inspec-demo
 ```
 
 This will:
-- Start LocalStack (local AWS emulator)
+- Start MinIO (S3-compatible local storage)
 - Deploy test infrastructure
 - Run InSpec security compliance tests
 - Generate test reports
+- No cloud credentials required!
 
 ## 🧹 Cleanup
 
@@ -56,21 +58,22 @@ See [LOCAL-TESTING-GUIDE.md](LOCAL-TESTING-GUIDE.md) for detailed instructions a
 
 ## ✅ What Gets Deployed Locally?
 
-- S3 buckets (with encryption, versioning)
-- Security groups
-- IAM roles and policies
-- All without touching AWS!
+- S3-compatible buckets (with versioning)
+- Simulated security rules
+- Simulated IAM policies
+- All running locally - no cloud services!
 
 ## 🔍 Next Steps
 
 ### For Prisma Cloud Demo:
 1. **Scan for security issues**: `cd prisma-cloud-demo && ./scan.sh`
 2. **Deploy locally**: `./local-deploy.sh`
-3. **Test resources**: `aws --endpoint-url=http://localhost:4566 s3 ls`
-4. **Clean up**: `./local-cleanup.sh`
+3. **Access MinIO Console**: Open http://localhost:9001 (user: minioadmin, password: minioadmin)
+4. **View Terraform state**: `cd terraform && terraform show`
+5. **Clean up**: `./local-cleanup.sh`
 
 ### For InSpec Demo:
 1. **Run compliance tests**: `cd inspec-demo && ./local-test.sh`
 2. **View results**: `cat test-results/results.json | jq`
-3. **Generate HTML report**: `inspec exec profiles/local-baseline/ -t aws:// --reporter html:test-results/report.html`
+3. **Generate HTML report**: `inspec exec profiles/local-baseline/ --reporter html:test-results/report.html`
 4. **Clean up**: `./local-cleanup.sh`
