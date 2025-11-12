@@ -1,0 +1,21 @@
+name: local-baseline
+title: Local Infrastructure Baseline Profile
+maintainer: Platform Testing Demo
+copyright: Platform Testing Demo
+copyright_email: demo@example.com
+license: Apache-2.0
+summary: An InSpec Compliance Profile for Local Infrastructure Testing (LocalStack)
+version: 1.0.0
+supports:
+  - platform-name: aws
+
+inputs:
+  - name: aws_region
+    type: String
+    value: us-east-1
+    description: AWS region to test (LocalStack uses us-east-1 by default)
+
+  - name: localstack_endpoint
+    type: String
+    value: http://localhost:4566
+    description: LocalStack endpoint URL
