@@ -2,12 +2,16 @@
 
 # InSpec Demo - Cloud Security Testing Script
 # This script demonstrates how to run InSpec compliance tests against AWS
+# For local testing without AWS credentials, use ./local-test.sh instead
 
 set -e
 
 echo "========================================="
 echo "InSpec Demo - Cloud Security Testing"
 echo "========================================="
+echo ""
+echo "ℹ️  This script tests against real AWS infrastructure."
+echo "💡 For local testing without AWS credentials, use: ./local-test.sh"
 echo ""
 
 # Check if InSpec is installed

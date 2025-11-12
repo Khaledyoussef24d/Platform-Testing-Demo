@@ -1,6 +1,8 @@
 # InSpec Demo
 
-This demo shows how to use Chef InSpec to test and audit AWS cloud infrastructure for security and compliance.
+> 🆕 **NEW!** Now with LocalStack support - Test cloud infrastructure locally without AWS credentials! [Quick Start →](#local-testing-no-aws-credentials-needed)
+
+This demo shows how to use Chef InSpec to test and audit cloud infrastructure for security and compliance.
 
 ## What is InSpec?
 
@@ -8,6 +10,12 @@ Chef InSpec is an open-source testing framework for infrastructure with a human-
 
 ## Prerequisites
 
+### For Local Testing (Recommended - No AWS Needed!)
+- InSpec installed (see installation instructions below)
+- Docker and Docker Compose
+- Terraform (for deploying test infrastructure)
+
+### For AWS Testing
 - InSpec installed (see installation instructions below)
 - AWS account with credentials configured
 - AWS CLI (optional, but recommended)
@@ -77,11 +85,40 @@ This demo includes:
   - `controls/security_groups.rb`: Security group compliance tests
   - `controls/iam.rb`: IAM security and best practices tests
   - `controls/cloudtrail.rb`: CloudTrail logging and audit tests
-- **run-tests.sh**: Automated test execution script
+- **profiles/local-baseline/**: InSpec profile for local testing (LocalStack)
+  - `inspec.yml`: Profile metadata and configuration
+  - `controls/s3_buckets.rb`: S3 bucket security tests
+  - `controls/security_groups.rb`: Security group compliance tests
+  - `controls/iam.rb`: IAM security and best practices tests
+- **local-test.sh**: Local testing script (no AWS credentials needed!)
+- **local-cleanup.sh**: Cleanup script for local testing
+- **run-tests.sh**: AWS testing script (requires AWS credentials)
 
 ## Running the Demo
 
-### Option 1: Using the Test Script (Recommended)
+### Local Testing (No AWS Credentials Needed!)
+
+**Quick Start:**
+
+```bash
+cd inspec-demo
+./local-test.sh
+```
+
+This will:
+1. ✅ Check prerequisites (InSpec, Docker)
+2. 🚀 Start LocalStack container
+3. 📦 Deploy test infrastructure to LocalStack
+4. 🧪 Run InSpec security tests
+5. 📊 Generate test reports
+
+**Cleanup:**
+
+```bash
+./local-cleanup.sh
+```
+
+### AWS Testing (Requires AWS Credentials)
 
 Simply run the provided script:
 
@@ -93,11 +130,26 @@ cd inspec-demo
 This will:
 1. Check if InSpec is installed
 2. Verify AWS credentials
-3. Run all security tests
+3. Run all security tests against real AWS
 4. Generate reports in multiple formats
 5. Save results to test-results/ directory
 
-### Option 2: Manual InSpec Commands
+### Manual InSpec Commands
+
+**For Local Testing (LocalStack):**
+
+```bash
+# Set up environment
+export AWS_ACCESS_KEY_ID=test
+export AWS_SECRET_ACCESS_KEY=test
+export AWS_DEFAULT_REGION=us-east-1
+export AWS_ENDPOINT_URL=http://localhost:4566
+
+# Run tests
+inspec exec profiles/local-baseline/ -t aws://
+```
+
+**For AWS Testing:**
 
 **Check the profile structure:**
 ```bash

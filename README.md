@@ -35,17 +35,24 @@ cd prisma-cloud-demo
 ### 2. InSpec Demo
 Location: `inspec-demo/`
 
-Demonstrates cloud infrastructure testing and compliance auditing using Chef InSpec. Test AWS resources for security and compliance with industry standards.
+Demonstrates cloud infrastructure testing and compliance auditing using Chef InSpec. Test cloud resources for security and compliance with industry standards.
 
 **Features:**
-- Comprehensive AWS security baseline profile
-- S3, IAM, Security Groups, and CloudTrail tests
-- Automated test execution script
+- Comprehensive security baseline profiles
+- S3, IAM, and Security Groups tests
+- **LocalStack support for local testing without AWS credentials**
+- Automated test execution scripts
 - Multiple report formats (CLI, JSON, HTML)
 
 [📖 Read the InSpec Demo README](inspec-demo/README.md)
 
-**Quick Start:**
+**Quick Start (Local Testing - No AWS Needed!):**
+```bash
+cd inspec-demo
+./local-test.sh
+```
+
+**Quick Start (AWS Testing):**
 ```bash
 cd inspec-demo
 ./run-tests.sh
@@ -72,7 +79,7 @@ cd inspec-demo
 | **Testing Phase** | Pre-deployment (Static) | Post-deployment (Dynamic) |
 | **Target** | IaC files | Live infrastructure |
 | **Installation** | `pip install checkov` | Platform-specific installer |
-| **AWS Credentials** | Not required for scanning | Required (or use LocalStack) |
+| **AWS Credentials** | Not required for scanning | Not required (use LocalStack) |
 | **Local Testing** | ✅ Yes (with LocalStack) | ✅ Yes (with LocalStack) |
 | **Execution Time** | Fast (seconds) | Moderate (API calls) |
 | **Best For** | Catching issues early | Compliance auditing |
@@ -121,9 +128,8 @@ cd prisma-cloud-demo
 - **For Local Deployment**: Docker, Docker Compose, and Terraform (no AWS account needed!)
 
 ### For InSpec Demo
-- InSpec CLI
-- AWS credentials configured (or LocalStack for local testing)
-- AWS account access (or LocalStack for local testing)
+- **For Local Testing**: InSpec CLI, Docker, Docker Compose, and Terraform (no AWS account needed!)
+- **For AWS Testing**: InSpec CLI, AWS credentials configured, and AWS account access
 
 ## Getting Started
 
@@ -131,9 +137,16 @@ cd prisma-cloud-demo
 
 Want to test immediately without AWS credentials? Start here:
 
+**Prisma Cloud Demo (IaC Security Scanning + Local Deployment):**
 ```bash
 cd prisma-cloud-demo
 ./local-deploy.sh
+```
+
+**InSpec Demo (Infrastructure Testing):**
+```bash
+cd inspec-demo
+./local-test.sh
 ```
 
 **📖 See [QUICKSTART-LOCAL.md](QUICKSTART-LOCAL.md) for the fastest way to get started!**

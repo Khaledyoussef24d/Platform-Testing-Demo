@@ -23,7 +23,7 @@ Before you begin, ensure you have:
 
 ## Quick Start
 
-### 1. Start LocalStack and Deploy
+### Option 1: Prisma Cloud Demo (IaC Scanning + Deployment)
 
 ```bash
 cd prisma-cloud-demo
@@ -38,7 +38,21 @@ This script will:
 5. 🎯 Deploy all resources to LocalStack
 6. ✅ Show deployment status
 
-### 2. Interact with Deployed Resources
+### Option 2: InSpec Demo (Infrastructure Testing)
+
+```bash
+cd inspec-demo
+./local-test.sh
+```
+
+This script will:
+1. ✅ Check prerequisites (InSpec, Docker, Terraform)
+2. 🚀 Start LocalStack container
+3. 📦 Deploy test infrastructure to LocalStack
+4. 🧪 Run InSpec security compliance tests
+5. 📊 Generate test reports
+
+### Interact with Deployed Resources
 
 After deployment, you can interact with the resources:
 
@@ -57,12 +71,19 @@ cd prisma-cloud-demo/terraform
 terraform show
 ```
 
-### 3. Clean Up
+### Clean Up
 
 When you're done testing:
 
+**For Prisma Cloud Demo:**
 ```bash
 cd prisma-cloud-demo
+./local-cleanup.sh
+```
+
+**For InSpec Demo:**
+```bash
+cd inspec-demo
 ./local-cleanup.sh
 ```
 
@@ -251,11 +272,20 @@ cd prisma-cloud-demo
 
 ### InSpec (Infrastructure Testing)
 
-You can also configure InSpec to test against LocalStack:
+InSpec can now test against LocalStack infrastructure:
 
 ```bash
-# In InSpec tests, use LocalStack endpoint
-AWS_ENDPOINT_URL=http://localhost:4566 inspec exec profiles/aws-security-baseline/ -t aws://
+# Quick start - automated
+cd inspec-demo
+./local-test.sh
+
+# Or manually configure and test
+export AWS_ACCESS_KEY_ID=test
+export AWS_SECRET_ACCESS_KEY=test
+export AWS_DEFAULT_REGION=us-east-1
+export AWS_ENDPOINT_URL=http://localhost:4566
+
+inspec exec profiles/local-baseline/ -t aws://
 ```
 
 ## Next Steps
