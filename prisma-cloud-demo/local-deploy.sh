@@ -1,13 +1,15 @@
 #!/bin/bash
 
-# Local Terraform Deployment Script using LocalStack
-# This script starts LocalStack and deploys the Terraform configuration locally
+# Local Terraform Deployment Script using MinIO
+# This script starts MinIO (S3-compatible storage) and deploys the Terraform configuration locally
+# No cloud credentials required - runs entirely with local Docker services
 
 set -e
 
 echo "========================================="
-echo "Local Cloud Deployment Demo"
-echo "Using LocalStack for AWS emulation"
+echo "Local Infrastructure Deployment Demo"
+echo "Using MinIO and local services"
+echo "No cloud credentials required!"
 echo "========================================="
 echo ""
 
@@ -42,29 +44,29 @@ fi
 echo "✅ Prerequisites check passed!"
 echo ""
 
-# Start LocalStack
-echo "🚀 Starting LocalStack..."
+# Start MinIO
+echo "🚀 Starting MinIO (S3-compatible storage)..."
 cd ..
-$DOCKER_COMPOSE up -d localstack
+$DOCKER_COMPOSE up -d minio
 
-echo "⏳ Waiting for LocalStack to be ready..."
-sleep 10
+echo "⏳ Waiting for MinIO to be ready..."
+sleep 5
 
-# Wait for LocalStack health check
+# Wait for MinIO health check
 MAX_RETRIES=30
 RETRY_COUNT=0
 while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
-    if curl -s http://localhost:4566/_localstack/health | grep -q '"s3": "available"'; then
-        echo "✅ LocalStack is ready!"
+    if curl -sf http://localhost:9000/minio/health/live > /dev/null 2>&1; then
+        echo "✅ MinIO is ready!"
         break
     fi
     RETRY_COUNT=$((RETRY_COUNT + 1))
-    echo "   Waiting for LocalStack... ($RETRY_COUNT/$MAX_RETRIES)"
+    echo "   Waiting for MinIO... ($RETRY_COUNT/$MAX_RETRIES)"
     sleep 2
 done
 
 if [ $RETRY_COUNT -eq $MAX_RETRIES ]; then
-    echo "❌ LocalStack failed to start properly"
+    echo "❌ MinIO failed to start properly"
     exit 1
 fi
 
@@ -79,15 +81,14 @@ terraform init
 
 echo ""
 
-# Create terraform.tfvars for LocalStack
-echo "📝 Creating LocalStack configuration..."
+# Create terraform.tfvars for MinIO
+echo "📝 Creating local configuration..."
 cat > terraform.tfvars <<EOF
-use_localstack     = true
-localstack_endpoint = "http://localhost:4566"
-aws_region         = "us-east-1"
-bucket_name        = "local-demo-bucket"
-vpc_id             = "vpc-local123"
-admin_ip_cidr      = "10.0.0.0/8"
+minio_endpoint  = "localhost:9000"
+minio_user      = "minioadmin"
+minio_password  = "minioadmin"
+bucket_name     = "demo-bucket"
+admin_ip_cidr   = "10.0.0.0/8"
 EOF
 
 echo ""
@@ -99,7 +100,7 @@ terraform plan -out=tfplan
 echo ""
 
 # Apply Terraform deployment
-echo "🚀 Deploying resources to LocalStack..."
+echo "🚀 Deploying resources to local MinIO..."
 terraform apply tfplan
 
 echo ""
@@ -107,10 +108,10 @@ echo "✅ Deployment completed successfully!"
 echo ""
 echo "📊 You can now:"
 echo "   - View resources: terraform show"
-echo "   - List S3 buckets: aws --endpoint-url=http://localhost:4566 s3 ls"
-echo "   - Test with InSpec (if configured)"
+echo "   - Access MinIO Console: http://localhost:9001 (user: minioadmin, password: minioadmin)"
+echo "   - List buckets: mc alias set local http://localhost:9000 minioadmin minioadmin && mc ls local"
 echo ""
 echo "🧹 To clean up:"
 echo "   - Run: terraform destroy -auto-approve"
-echo "   - Stop LocalStack: cd .. && $DOCKER_COMPOSE down"
+echo "   - Stop MinIO: cd .. && $DOCKER_COMPOSE down"
 echo ""

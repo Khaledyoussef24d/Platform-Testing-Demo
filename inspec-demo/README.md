@@ -1,25 +1,20 @@
 # InSpec Demo
 
-> 🆕 **NEW!** Now with LocalStack support - Test cloud infrastructure locally without AWS credentials! [Quick Start →](#local-testing-no-aws-credentials-needed)
+> 🆕 **100% LOCAL!** Test infrastructure locally with MinIO - No cloud credentials required! [Quick Start →](#local-testing-no-cloud-credentials-needed)
 
-This demo shows how to use Chef InSpec to test and audit cloud infrastructure for security and compliance.
+This demo shows how to use Chef InSpec to test and audit infrastructure for security and compliance.
 
 ## What is InSpec?
 
-Chef InSpec is an open-source testing framework for infrastructure with a human-readable language for specifying compliance, security, and policy requirements. It can audit cloud infrastructure, detect security issues, and ensure compliance with security policies.
+Chef InSpec is an open-source testing framework for infrastructure with a human-readable language for specifying compliance, security, and policy requirements. It can audit infrastructure resources, detect security issues, and ensure compliance with security policies.
 
 ## Prerequisites
 
-### For Local Testing (Recommended - No AWS Needed!)
+### For Local Testing (100% Local - No Cloud Credentials!)
 - InSpec installed (see installation instructions below)
 - Docker and Docker Compose
 - Terraform (for deploying test infrastructure)
-
-### For AWS Testing
-- InSpec installed (see installation instructions below)
-- AWS account with credentials configured
-- AWS CLI (optional, but recommended)
-- Ruby 3.0+ (for gem installation method)
+- No cloud account or credentials required!
 
 ## Installation
 

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # InSpec Local Testing Script
-# This script runs InSpec compliance tests against LocalStack (no AWS credentials needed)
+# This script runs InSpec compliance tests against MinIO (no cloud credentials needed)
 
 set -e
 
@@ -10,7 +10,8 @@ PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 
 echo "========================================="
 echo "InSpec Local Testing Demo"
-echo "Testing Against LocalStack"
+echo "Testing Against MinIO Local Storage"
+echo "No cloud credentials required!"
 echo "========================================="
 echo ""
 
@@ -38,7 +39,7 @@ echo ""
 # Check if Docker is installed
 if ! command -v docker &> /dev/null; then
     echo "⚠️  Docker is not installed."
-    echo "Docker is required to run LocalStack."
+    echo "Docker is required to run MinIO."
     echo "Please install Docker from: https://docs.docker.com/get-docker/"
     echo ""
     exit 1
@@ -47,19 +48,23 @@ fi
 echo "✅ Docker is installed!"
 echo ""
 
-# Check if LocalStack is running
-echo "🔍 Checking LocalStack status..."
-if ! curl -s http://localhost:4566/_localstack/health > /dev/null 2>&1; then
-    echo "⚠️  LocalStack is not running."
+# Check if MinIO is running
+echo "🔍 Checking MinIO status..."
+if ! curl -sf http://localhost:9000/minio/health/live > /dev/null 2>&1; then
+    echo "⚠️  MinIO is not running."
     echo ""
-    echo "Starting LocalStack..."
+    echo "Starting MinIO..."
     cd "$PROJECT_ROOT"
-    docker-compose up -d localstack
+    if command -v docker-compose &> /dev/null; then
+        docker-compose up -d minio
+    else
+        docker compose up -d minio
+    fi
     
-    echo "⏳ Waiting for LocalStack to be ready..."
+    echo "⏳ Waiting for MinIO to be ready..."
     for i in {1..30}; do
-        if curl -s http://localhost:4566/_localstack/health > /dev/null 2>&1; then
-            echo "✅ LocalStack is ready!"
+        if curl -sf http://localhost:9000/minio/health/live > /dev/null 2>&1; then
+            echo "✅ MinIO is ready!"
             break
         fi
         echo -n "."
@@ -67,19 +72,13 @@ if ! curl -s http://localhost:4566/_localstack/health > /dev/null 2>&1; then
     done
     echo ""
 else
-    echo "✅ LocalStack is already running!"
+    echo "✅ MinIO is already running!"
 fi
 echo ""
 
-# Set up environment for LocalStack
-export AWS_ACCESS_KEY_ID=test
-export AWS_SECRET_ACCESS_KEY=test
-export AWS_DEFAULT_REGION=us-east-1
-export AWS_ENDPOINT_URL=http://localhost:4566
-
-echo "🔧 Environment configured for LocalStack:"
-echo "   Endpoint: $AWS_ENDPOINT_URL"
-echo "   Region: $AWS_DEFAULT_REGION"
+echo "🔧 Local storage endpoint configured:"
+echo "   MinIO API: http://localhost:9000"
+echo "   MinIO Console: http://localhost:9001"
 echo ""
 
 # Deploy test infrastructure if needed
@@ -92,11 +91,11 @@ if [ ! -f ".terraform.lock.hcl" ]; then
 fi
 
 # Check if infrastructure is already deployed
-if terraform show 2>/dev/null | grep -q "# aws_s3_bucket"; then
+if terraform show 2>/dev/null | grep -q "# minio_s3_bucket"; then
     echo "✅ Test infrastructure is already deployed!"
 else
-    echo "🚀 Deploying test infrastructure to LocalStack..."
-    terraform apply -var="use_localstack=true" -auto-approve
+    echo "🚀 Deploying test infrastructure to MinIO..."
+    terraform apply -auto-approve
     echo "✅ Infrastructure deployed!"
 fi
 echo ""
@@ -104,8 +103,8 @@ echo ""
 # Create results directory
 mkdir -p "$SCRIPT_DIR/test-results"
 
-# Run InSpec tests against LocalStack
-echo "📋 Running InSpec security compliance tests against LocalStack..."
+# Run InSpec tests against local MinIO
+echo "📋 Running InSpec security compliance tests against local storage..."
 echo ""
 
 cd "$SCRIPT_DIR"
@@ -113,8 +112,7 @@ cd "$SCRIPT_DIR"
 # Run tests with CLI output
 echo "Running tests with CLI output..."
 inspec exec profiles/local-baseline/ \
-    -t aws:// \
-    --input localstack_endpoint=http://localhost:4566 \
+    --input minio_endpoint=http://localhost:9000 \
     --reporter cli
 
 echo ""
@@ -124,8 +122,7 @@ echo ""
 # Run tests with JSON output
 echo "Running tests with JSON output..."
 inspec exec profiles/local-baseline/ \
-    -t aws:// \
-    --input localstack_endpoint=http://localhost:4566 \
+    --input minio_endpoint=http://localhost:9000 \
     --reporter json:test-results/results.json \
     --reporter cli
 
@@ -137,7 +134,7 @@ echo "To view detailed JSON results:"
 echo "  cat test-results/results.json | jq"
 echo ""
 echo "To generate HTML report:"
-echo "  inspec exec profiles/local-baseline/ -t aws:// --reporter html:test-results/report.html"
+echo "  inspec exec profiles/local-baseline/ --reporter html:test-results/report.html"
 echo ""
 echo "To clean up:"
 echo "  cd $PROJECT_ROOT && ./inspec-demo/local-cleanup.sh"

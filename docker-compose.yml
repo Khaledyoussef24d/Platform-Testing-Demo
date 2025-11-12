@@ -1,23 +1,23 @@
-version: '3.8'
-
 services:
-  localstack:
-    container_name: localstack-demo
-    image: localstack/localstack:latest
+  minio:
+    container_name: minio-demo
+    image: minio/minio:latest
     ports:
-      - "4566:4566"            # LocalStack Gateway
-      - "4510-4559:4510-4559"  # External services port range
+      - "9000:9000"      # MinIO API
+      - "9001:9001"      # MinIO Console
     environment:
-      - SERVICES=s3,ec2,iam,sts
-      - DEBUG=1
-      - DATA_DIR=/tmp/localstack/data
-      - DOCKER_HOST=unix:///var/run/docker.sock
+      - MINIO_ROOT_USER=minioadmin
+      - MINIO_ROOT_PASSWORD=minioadmin
     volumes:
-      - "${LOCALSTACK_VOLUME_DIR:-./.localstack-data}:/var/lib/localstack"
-      - "/var/run/docker.sock:/var/run/docker.sock"
+      - minio-data:/data
+    command: server /data --console-address ":9001"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:4566/_localstack/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
       interval: 10s
       timeout: 5s
       retries: 5
       start_period: 10s
+
+volumes:
+  minio-data:
+    driver: local
