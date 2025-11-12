@@ -50,6 +50,7 @@ Demonstrates cloud infrastructure testing and compliance auditing using Chef InS
 ```bash
 cd inspec-demo
 ./local-test.sh
+# See inspec-demo/LOCAL-TESTING.md for detailed guide
 ```
 
 **Quick Start (AWS Testing):**

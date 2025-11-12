@@ -118,6 +118,8 @@ This will:
 ./local-cleanup.sh
 ```
 
+**📖 See [LOCAL-TESTING.md](LOCAL-TESTING.md) for comprehensive local testing documentation.**
+
 ### AWS Testing (Requires AWS Credentials)
 
 Simply run the provided script:
